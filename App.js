@@ -1,18 +1,53 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState('');
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoal(enteredText);
+  };
+
+  const addGoalHandler = () => {
+    setCourseGoals(prevGoals => [...prevGoals, enteredGoal]);
+  };
+
   return (
-    <View style={{padding: 30}}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-        <TextInput placeholder="Course goal" style={{width: '80%', borderBottomColor: 'black', borderWidth: 1, padding: 10}}/>
-        <Button title="ADD" />
+    <View style={styles.screen}>
+      <View style={styles.inputContainer}>
+        <TextInput placeholder="Course goal" style={styles.textInput} onChangeText={goalInputHandler} value={enteredGoal} />
+        <Button title="ADD" onPress={addGoalHandler} />
       </View>
       <View>
-        <Text>Output Area</Text>
+        {
+          courseGoals.map(goal => <View key={goal} style={styles.listItem}><Text>{goal}</Text></View>)
+        }
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    padding: 50
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  textInput: {
+    width: '80%',
+    borderBottomColor: 'black',
+    borderWidth: 1,
+    padding: 10
+  },
+  listItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
+    borderWidth: 1
+  }
+});
